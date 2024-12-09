@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input, Toast } from '../../shared/components';
-import { Colors } from '../../shared/tokens/colors';
-import { useToast } from '../../shared/components/Toast/context';
+import { useToast } from '@/shared/components/Toast/context';
+import { Colors } from '@/shared/tokens/colors';
 
 export const AuthScreen = () => {
     const { show } = useToast();
@@ -11,8 +11,12 @@ export const AuthScreen = () => {
             <StatusBar />
             <Input placeholder='E-mail' />
             <Input placeholder='Пароль' type='password' />
-            <Button text='Войти' onPress={show} />
-            {/* <Toast /> */}
+            <Button
+                text='Войти'
+                onPress={() => {
+                    show('Show');
+                }}
+            />
         </View>
     );
 };

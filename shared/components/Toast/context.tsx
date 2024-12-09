@@ -1,70 +1,89 @@
 import {
     createContext,
-    memo,
-    PropsWithChildren,
+    ReactNode,
+    useCallback,
     useContext,
     useMemo,
-    useRef,
     useState,
 } from 'react';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
 import { Toast } from '.';
 
 interface ToastContext {
-    // visible: boolean;
-    // message: string;
-    show: () => void;
-    // error: () => void;
-    // warn: () => void;
-    // success: () => void;
+    show: (msg: string) => void;
+    error: (msg: string) => void;
+    success: (msg: string) => void;
 }
 
 const ToastContext = createContext<ToastContext | undefined>(undefined);
 
-export type ToastHandlers = {
-    show: () => void;
-    hide: () => void;
-};
+export enum EVisible {
+    DEFAULT = 'default',
+    ERROR = 'error',
+    SUCCESS = 'success',
+}
 
 const TOAST_TIMEOUT = 1500;
 
-export const ToastProvider = ({ children }: PropsWithChildren) => {
-    const [visible, setVisible] = useState<boolean>(false);
+export type Config = {
+    delay?: string;
+};
+
+type VisibleConfig = {
+    status: boolean;
+    variant?: EVisible;
+};
+
+type Props = {
+    config?: Config;
+    children: ReactNode;
+};
+
+export const ToastProvider = ({ children, config }: Props) => {
+    const [visible, setVisible] = useState<VisibleConfig>({
+        status: false,
+    });
+
     const [message, setMessage] = useState<string>('');
-    const animation = new Animated.Value(0);
-    const toastRef = useRef<ToastHandlers>(null);
 
-    const hide = () => {
-        toastRef.current?.hide();
-        setVisible(false);
-    };
+    const hide = useCallback(() => {
+        setVisible({ status: false });
+    }, []);
 
-    const show = () => {
-        toastRef.current?.show();
-        const promise = new Promise((resolve, reject) => {
-            setVisible(true);
-            setTimeout(() => {
-                resolve('TOAST_CLOSE');
-            }, TOAST_TIMEOUT);
-        });
+    const show = useCallback((msg: string) => {
+        setVisible({ status: true, variant: EVisible.DEFAULT });
+        setMessage(msg);
+    }, []);
 
-        promise.then(() => hide());
+    const error = useCallback((msg: string) => {
+        setVisible({ status: true, variant: EVisible.ERROR });
+        setMessage(msg);
+    }, []);
+
+    const success = (msg: string) => {
+        setVisible({ status: true, variant: EVisible.SUCCESS });
+        setMessage(msg);
     };
 
     const memoizedValues = useMemo(
         () => ({
-            // visible,
-            // message,
+            error,
+            success,
             show,
         }),
-        [visible, message],
+        [],
     );
 
     return (
         <ToastContext.Provider value={memoizedValues}>
-            {visible && (
+            {visible.status && (
                 <View>
-                    <Toast ref={toastRef} />
+                    <Toast
+                        config={config}
+                        message={message}
+                        variant={visible?.variant || EVisible.DEFAULT}
+                        onClose={hide}
+                    />
                 </View>
             )}
             {children}
