@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, StatusBar } from 'react-native';
+import { Button, Input, Toast } from './shared/components';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from './shared/tokens/colors';
+import { AuthScreen } from './screens/Auth';
+import { ToastProvider } from './shared/components/Toast/context';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.safeContainer}>
+                {/* <Toast /> */}
+
+                <ToastProvider>
+                    <AuthScreen />
+                </ToastProvider>
+            </SafeAreaView>
+        </SafeAreaProvider>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    safeContainer: {
+        flex: 1,
+        textAlign: 'center',
+        justifyContent: 'center',
+        // marginTop: StatusBar.currentHeight,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: Colors.primary,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: 'blue',
+    },
 });
