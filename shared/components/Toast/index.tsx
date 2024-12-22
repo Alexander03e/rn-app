@@ -51,13 +51,13 @@ export const Toast = ({ onClose, variant, message, config }: Props) => {
 };
 
 const styles = StyleSheet.create({
-    [EVisible.DEFAULT]: {
+    default: {
         backgroundColor: Colors.accentSecond,
     },
-    [EVisible.ERROR]: {
+    error: {
         backgroundColor: Colors.primarySpecial,
     },
-    [EVisible.SUCCESS]: {
+    success: {
         backgroundColor: Colors.accentFirst,
     },
     text: {

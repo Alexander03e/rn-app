@@ -60,10 +60,10 @@ export const ToastProvider = ({ children, config }: Props) => {
         setMessage(msg);
     }, []);
 
-    const success = (msg: string) => {
+    const success = useCallback((msg: string) => {
         setVisible({ status: true, variant: EVisible.SUCCESS });
         setMessage(msg);
-    };
+    }, []);
 
     const memoizedValues = useMemo(
         () => ({

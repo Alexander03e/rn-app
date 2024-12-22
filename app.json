@@ -7,10 +7,12 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "backgroundColor": "#313641",
+    "scheme": "rn-app",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#3e4552"
     },
     "ios": {
       "supportsTablet": true
@@ -24,8 +26,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "experiments": { 
-      "tsconfigPaths": true 
-    }
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

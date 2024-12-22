@@ -5,21 +5,40 @@ import {
     PressableProps,
     StyleSheet,
     Text,
+    TextProps,
 } from 'react-native';
 import { Paddings, Radius } from '../../tokens/size';
 import { Colors } from '../../tokens/colors';
+import { ReactElement } from 'react';
 
 type Props = PressableProps & {
     variant?: 'empty' | 'filled';
     text?: string;
+    icon?: ReactElement;
+    textProps?: TextProps;
+    background?: {
+        hover?: string;
+        default?: string;
+    };
 };
 
-export const Button = ({ variant = 'filled', text = '', ...props }: Props) => {
+export const Button = ({
+    variant = 'filled',
+    text = '',
+    icon,
+    style,
+    textProps,
+    background,
+    ...props
+}: Props) => {
     const animatedValue = new Animated.Value(100);
 
     const color = animatedValue.interpolate({
         inputRange: [0, 100],
-        outputRange: [Colors.accentFirst, Colors.primarySpecial],
+        outputRange: [
+            background?.hover || Colors.accentFirst,
+            background?.default || Colors.primarySpecial,
+        ],
     });
 
     const fadeIn = (e: GestureResponderEvent) => {
@@ -41,9 +60,19 @@ export const Button = ({ variant = 'filled', text = '', ...props }: Props) => {
     };
 
     return (
-        <Pressable onPressIn={fadeIn} onPressOut={fadeOut} {...props}>
+        <Pressable
+            style={style}
+            onPressIn={fadeIn}
+            onPressOut={fadeOut}
+            {...props}
+        >
             <Animated.View style={{ ...styles.button, backgroundColor: color }}>
-                <Text style={styles.text}>{text}</Text>
+                {icon}
+                {text && (
+                    <Text style={styles.text} {...textProps}>
+                        {text}
+                    </Text>
+                )}
             </Animated.View>
         </Pressable>
     );
@@ -54,6 +83,9 @@ const styles = StyleSheet.create({
         color: Colors.primaryButtonText,
     },
     button: {
+        flexDirection: 'row',
+        gap: 16,
+        alignItems: 'center',
         borderRadius: Radius.x1,
         backgroundColor: Colors.primarySpecial,
         paddingHorizontal: Paddings.inlineX1,
