@@ -2,23 +2,36 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Film } from '../model';
 import { FilmCard } from './Card';
 import { Colors } from '@/shared/tokens/colors';
+import { useState } from 'react';
 
 interface IProps {
-    films: Film[];
+    films?: Film[];
     title?: string;
+    isVertical?: boolean;
 }
 
-export const FilmsGroup = ({ title, films }: IProps) => {
+export const FilmsGroup = ({ title, isVertical, films }: IProps) => {
+    const [pressedFilm, setPressedFilm] = useState<number | null>(null);
     const renderFilm = ({ item }: { item: Film }) => {
-        return <FilmCard {...item} />;
+        return (
+            <FilmCard
+                onPress={setPressedFilm}
+                isPressed={item.id === pressedFilm}
+                {...item}
+            />
+        );
     };
+
     return (
         <View style={styles.container}>
             {title && <Text style={styles.title}>{title}</Text>}
             <FlatList
-                horizontal
+                numColumns={isVertical ? 2 : undefined}
+                horizontal={!isVertical}
                 contentContainerStyle={{
-                    gap: 12,
+                    columnGap: 16,
+
+                    rowGap: 24,
                 }}
                 data={films}
                 renderItem={renderFilm}

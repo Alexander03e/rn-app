@@ -19,11 +19,16 @@ import {
     vec,
 } from '@shopify/react-native-skia';
 import { useState } from 'react';
+import { PlayIcon } from '../../../assets/icons/play';
+import { router } from 'expo-router';
 
-type Slide = Pick<Film, 'poster' | 'name' | 'description' | 'rating' | 'year'>;
+type Slide = Pick<
+    Film,
+    'poster' | 'name' | 'description' | 'rating' | 'year' | 'id'
+>;
 
 type Props = {
-    slides: Slide[];
+    slides?: Slide[];
 };
 
 export const Carousel = ({ slides }: Props) => {
@@ -45,11 +50,22 @@ export const Carousel = ({ slides }: Props) => {
     );
 };
 
-export const Slide = ({ poster, name, rating, year, description }: Slide) => {
+export const Slide = ({
+    poster,
+    name,
+    rating,
+    year,
+    description,
+    id,
+}: Slide) => {
     const [slideSize, setSlideSize] = useState<{
         height: number;
         width: number;
     } | null>();
+
+    const handleClick = () => {
+        router.push(`film/${id}`);
+    };
 
     const handleLayout = (event: LayoutChangeEvent) => {
         const { height, width } = event.nativeEvent.layout;
@@ -74,7 +90,7 @@ export const Slide = ({ poster, name, rating, year, description }: Slide) => {
                             <LinearGradient
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 0, y: slideSize.height / 1.4 }}
-                                colors={['transparent', 'rgba(0, 0, 0, 0.65)']}
+                                colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
                             />
                         </Rect>
                     </Canvas>
@@ -83,9 +99,24 @@ export const Slide = ({ poster, name, rating, year, description }: Slide) => {
                     <Text style={styles.name}>
                         {name} ({year})
                     </Text>
-                    <Text style={styles.name}>{rating.imdb}</Text>
+                    <Text style={styles.name}>Рейтинг: {rating.imdb}</Text>
                     <View style={styles.buttons}>
-                        <Button style={{ flex: 1 }} text='Смотреть' />
+                        <Button
+                            icon={<PlayIcon />}
+                            background={{
+                                default: 'rgba(0,0,0,0.05)',
+                                hover: 'rgba(0,0,0,0.2)',
+                            }}
+                            style={{
+                                borderWidth: 1,
+                                overflow: 'hidden',
+                                borderRadius: 12,
+                                flex: 1,
+                                borderColor: 'white',
+                            }}
+                            onPress={handleClick}
+                            text='Смотреть'
+                        />
                         <Button
                             background={{ default: Colors.accentFourth }}
                             icon={<Bookmark />}

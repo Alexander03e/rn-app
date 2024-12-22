@@ -33,7 +33,7 @@ function RootLayout() {
                                 headerBackTitle: 'Назад',
                                 headerTintColor: Colors.primarySpecial,
                                 headerStyle: {
-                                    backgroundColor: Colors.primary,
+                                    backgroundColor: 'black',
                                 },
                             }}
                         />

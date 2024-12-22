@@ -29,7 +29,7 @@ const filmsSlice: StateCreator<FilmsStore> = (set, get) => ({
     getDetailedFilm: async id => {
         set({ isLoading: true });
         try {
-            const detailedFilm = await api.getById(id);
+            const detailedFilm = (await api.getById(id))[0];
 
             set({ detailedFilm });
         } catch (e) {
@@ -41,7 +41,7 @@ const filmsSlice: StateCreator<FilmsStore> = (set, get) => ({
     getMainFilms: async () => {
         set({ isLoading: true });
         try {
-            const mainFilms = (await api.getAll()).docs;
+            const mainFilms = await api.getAll();
 
             set({ mainFilms });
         } catch (e) {
