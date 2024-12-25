@@ -1,16 +1,18 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/shared/tokens/colors';
 import { ToastProvider } from '@/shared/components/Toast/context';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { setBackgroundColorAsync } from 'expo-system-ui';
 
 function RootLayout() {
     useEffect(() => {
         setBackgroundColorAsync(Colors.primary);
-        // router.push('/login');
+
+        router.push('login');
     }, []);
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.safeContainer}>

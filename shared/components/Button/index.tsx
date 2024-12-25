@@ -42,6 +42,7 @@ export const Button = ({
         ],
     });
 
+    // Анимации при нажатии
     const fadeIn = (e: GestureResponderEvent) => {
         Animated.timing(animatedValue, {
             toValue: 0,
@@ -77,8 +78,8 @@ export const Button = ({
                 {text && (
                     <Text
                         style={{
+                            // ...textStyle,
                             ...styles?.[`text${variant}`],
-                            ...textStyle,
                         }}
                         {...textRest}
                     >
