@@ -4,7 +4,7 @@ import { Input } from '@/shared/components/Input';
 import { Colors } from '@/shared/tokens/colors';
 
 describe('Input Component', () => {
-    it('должен отображать метку, если она передана', () => {
+    it('должен отображать лэйбл, если она передана', () => {
         const { getByText } = render(<Input label='Test Label' />);
         expect(getByText('Test Label')).toBeTruthy();
     });

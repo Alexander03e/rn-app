@@ -49,7 +49,11 @@ export const Input = ({ type = 'text', label, ...props }: Props) => {
                     {...props}
                 />
                 {type === 'password' && (
-                    <Pressable style={styles.eyeIcon} onPress={toggleVisible}>
+                    <Pressable
+                        style={styles.eyeIcon}
+                        testID={'eye-icon'}
+                        onPress={toggleVisible}
+                    >
                         {!isVisisble ? <EyeOpenedIcon /> : <EyeClosedIcon />}
                     </Pressable>
                 )}

@@ -19,12 +19,16 @@ export class FilmApi {
     }
 
     async getAll(): Promise<Film[]> {
-        return (
+        const res = (
             await this.apiInstance.get(
                 // 'movie?rating.imdb=8-10&notNullFields=poster.url&lists=top250',
                 'movie',
             )
         ).data;
+
+        console.log(res, 'RES');
+
+        return res;
     }
 
     // TODO: Поменять методы когда перейду на нормальную апи
